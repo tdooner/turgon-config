@@ -1,0 +1,59 @@
+From 58a4b174ba93dae376a2cf4c8013e8b720616cc5 Mon Sep 17 00:00:00 2001
+From: Tom Dooner <tom.dooner@causes.com>
+Date: Sun, 6 Jul 2014 21:26:06 -0700
+Subject: [PATCH] Add slashes where necessary
+
+---
+ modules/sickbeard.py | 6 +++---
+ static/js/index.js   | 4 ++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/modules/sickbeard.py b/modules/sickbeard.py
+index dd759a1..a881461 100644
+--- a/modules/sickbeard.py
++++ b/modules/sickbeard.py
+@@ -28,7 +28,7 @@ def sickbeard_url():
+ 
+     url = '%s/api/%s' % (url_base, get_setting_value('sickbeard_api'))
+ 
+-    return sickbeard_http() + url
++    return sickbeard_http() + url + '/'
+ 
+ 
+ def sickbeard_url_no_api():
+@@ -42,7 +42,7 @@ def sickbeard_url_no_api():
+     if webroot:
+         url_base = '%s/%s' % (url_base, webroot)
+ 
+-    return sickbeard_http() + url_base
++    return sickbeard_http() + url_base + '/'
+ 
+ 
+ def sickbeard_api(params=None, use_json=True, dev=False):
+@@ -200,7 +200,7 @@ def history(limit):
+ 
+ # returns a link with the path to the required image from SB
+ def get_pic(tvdb, style='banner'):
+-    return '%s/xhr/sickbeard/get_%s/%s' % (maraschino.WEBROOT, style, tvdb)
++    return '%s/xhr/sickbeard/get_%s/%s/' % (maraschino.WEBROOT, style, tvdb)
+ 
+ 
+ @app.route('/xhr/sickbeard/get_ep_info/<tvdbid>/<season>/<ep>/')
+diff --git a/static/js/index.js b/static/js/index.js
+index fa71220..c0ac703 100644
+--- a/static/js/index.js
++++ b/static/js/index.js
+@@ -74,6 +74,10 @@ $(document).ready(function() {
+       url += '/' + settings.params[i];
+     }
+ 
++    if (url[url.length - 1] != '/') {
++      url += '/';
++    }
++
+     var module_ele = $('#' + module);
+ 
+     if (!module_ele.hasClass('edit_settings')) {
+-- 
+1.9.1
+
